@@ -18,14 +18,26 @@ if(NOT USE_SYSTEM_FFMPEG)
 			"${CMAKE_CURRENT_SOURCE_DIR}/windows/x86_64/swresample.lib"
 			"Bcrypt.lib")
 	elseif (APPLE)
-		target_link_libraries(${FFMPEG_CORE_NAME} INTERFACE
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavformat.a"
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavcodec.a"
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libswscale.a"
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavutil.a"
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavfilter.a"
-			"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libswresample.a"
-			"z")
+		if (CMAKE_SYSTEM_PROCESSOR MATCHES "^arm" OR
+		    CMAKE_SYSTEM_PROCESSOR MATCHES "^aarch64")
+			target_link_libraries(${FFMPEG_CORE_NAME} INTERFACE
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libavformat.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libavcodec.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libswscale.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libavutil.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libavfilter.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/AArch64/libswresample.a"
+				"z")
+		else ()
+			target_link_libraries(${FFMPEG_CORE_NAME} INTERFACE
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavformat.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavcodec.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libswscale.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavutil.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libavfilter.a"
+				"${CMAKE_CURRENT_SOURCE_DIR}/macos/x86_64/libswresample.a"
+				"z")
+		endif ()
 	elseif (UNIX)
 		target_link_libraries(${FFMPEG_CORE_NAME} INTERFACE
 			"${CMAKE_CURRENT_SOURCE_DIR}/linux/x86_64/libavformat.a"
